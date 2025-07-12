@@ -10,9 +10,6 @@ import urllib.request
 import os
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
-
-print("Loading MiDaS depth estimation model...")
 try:
     model_type = "MiDaS_small"
     midas = torch.hub.load("intel-isl/MiDaS", model_type, trust_repo=True)
@@ -21,15 +18,13 @@ try:
     
     midas_transforms = torch.hub.load("intel-isl/MiDaS", "transforms", trust_repo=True)
     transform = midas_transforms.small_transform
-    print("MiDaS model loaded successfully!")
+    print("MiDaS model loaded")
 except Exception as e:
     print(f"Error loading MiDaS: {e}")
-    print("Falling back to motion detection without depth...")
     midas = None
     transform = None
 
 def estimate_depth(frame):
-    """Estimate depth using MiDaS model"""
     if midas is None:
         return None
     
@@ -59,7 +54,6 @@ def estimate_depth(frame):
         return None, None
 
 def get_object_depth(depth_map, center_x, center_y, window_size=20):
-    """Get average depth at object center"""
     if depth_map is None:
         return None
     
@@ -85,7 +79,7 @@ out = cv2.VideoWriter('depth_motion_output.avi', fourcc, 20.0, (output_width, ou
 background_subtractor = cv2.createBackgroundSubtractorMOG2(detectShadows=True)
 motion_threshold = 1000
 
-print("Starting 60-second recording with AI depth estimation...")
+print("Starting 60-second recording with AI depth estimation")
 print("Motion detection cycles: ON for 6 seconds, OFF for 6 seconds")
 print("Press 'q' to quit early")
 
@@ -110,7 +104,7 @@ while True:
     
     elapsed_time = time.time() - start_time
     if elapsed_time >= recording_duration:
-        print(f"\n60 seconds completed! Recording finished.")
+        print(f"\n60 seconds completed. Recording finished.")
         break
     
     frame = cv2.resize(frame, (output_width, output_height))
@@ -273,4 +267,4 @@ cap.release()
 out.release()
 cv2.destroyAllWindows()
 
-print("Recording saved as 'depth_motion_output.avi'")
+print("Recording saved")
