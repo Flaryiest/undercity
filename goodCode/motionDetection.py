@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import time
 import math
-import music
+from music import CycleMusic, play_squid_music, stop_music
 import torch
 import torch.nn.functional as F
 from torchvision.transforms import Compose
@@ -65,7 +65,6 @@ def get_object_depth(depth_map, center_x, center_y, window_size=20):
     
     roi = depth_map[y_start:y_end, x_start:x_end]
     
-
     return np.median(roi)
 
 cap = cv2.VideoCapture(0)
@@ -80,7 +79,8 @@ background_subtractor = cv2.createBackgroundSubtractorMOG2(detectShadows=True)
 motion_threshold = 1000
 
 print("Starting 60-second recording with AI depth estimation")
-print("Motion detection cycles: ON for 6 seconds, OFF for 6 seconds")
+print("Motion detection cycles: OFF for first 6 seconds, then ON for 6 seconds")
+print("Music: Squid music plays initially, then switches to green/red light cycling")
 print("Press 'q' to quit early")
 
 start_time = time.time()
@@ -90,7 +90,11 @@ cycle_duration = 6
 frame_center_x = output_width // 2
 frame_center_y = output_height // 2
 
-music.play_squid_music()
+
+play_squid_music() 
+
+cycle_music = CycleMusic(cycle_duration=6)
+music_switched = False
 
 depth_frame_skip = 5
 frame_counter = 0
@@ -110,6 +114,16 @@ while True:
     frame = cv2.resize(frame, (output_width, output_height))
     frame_counter += 1
 
+    if not music_switched and elapsed_time >= cycle_duration:
+        print("Starting green/red light sound effects (squid music continues)...")
+        cycle_music.start()
+        music_switched = True
+
+    current_music_state = "squid"
+    music_remaining = 0
+    if music_switched:
+        current_music_state, music_remaining = cycle_music.update()
+
     crosshair_size = 20
     cv2.line(frame, (frame_center_x - crosshair_size, frame_center_y), 
              (frame_center_x + crosshair_size, frame_center_y), (255, 255, 255), 2)
@@ -122,7 +136,7 @@ while True:
             last_depth_map, last_depth_normalized = depth_result
 
     cycle_position = elapsed_time % (cycle_duration * 2)
-    motion_detection_active = cycle_position < cycle_duration
+    motion_detection_active = cycle_position >= cycle_duration
     
     motion_detected = False
     motion_count = 0
@@ -242,10 +256,24 @@ while True:
     cv2.putText(frame, f"Time left: {remaining_time:.1f}s", (20, 230), 
                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
     
-    cycle_remaining = cycle_duration - (cycle_position if motion_detection_active else (cycle_position - cycle_duration))
+    if motion_detection_active:
+        cycle_remaining = (cycle_duration * 2) - cycle_position
+    else:
+        cycle_remaining = cycle_duration - cycle_position
+    
     cycle_status = "ON" if motion_detection_active else "OFF"
     cv2.putText(frame, f"Cycle: {cycle_status} ({cycle_remaining:.1f}s left)", (20, 270), 
                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+    
+    if music_switched:
+        music_display = f"Music: squid + {current_music_state}-light ({music_remaining:.1f}s)"
+        music_color = (0, 255, 0) if current_music_state == "green" else (0, 0, 255)
+    else:
+        music_display = f"Music: squid only ({(cycle_duration - elapsed_time):.1f}s left)"
+        music_color = (255, 255, 0)
+    
+    cv2.putText(frame, music_display, (20, 330), 
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, music_color, 2)
     
     if motion_detection_active:
         cv2.putText(frame, f"Motion objects: {motion_count}", (20, 300), 
@@ -267,4 +295,4 @@ cap.release()
 out.release()
 cv2.destroyAllWindows()
 
-print("Recording saved")
+stop_music()
