@@ -9,78 +9,118 @@ def find_xiao_port():
             return port.device
     return None
 
-def find_xiao_ports():
-    ports = serial.tools.list_ports.comports()
-    xiao_ports = []
-    for port in ports:
-        if "usbmodem" in port.device.lower() or "2e8a" in str(port.hwid):
-            xiao_ports.append(port.device)
-    return sorted(xiao_ports)
-
-xiao_ports = find_xiao_ports()
-if len(xiao_ports) >= 2:
-    PORT = xiao_ports[1] 
-else:
-    PORT = find_xiao_port() or "/dev/cu.usbmodem11401"
-
+PORT = find_xiao_port() or "/dev/cu.usbmodem11401"
 BAUD = 115200
 
 try:
     ser = serial.Serial(PORT, BAUD, timeout=2)
     time.sleep(1)
-    print(f"Connected to Xiao RP2040 on {PORT}")
+    print(f"Connected to Orpheus Pico on {PORT}")
     
-
+    # Reset and initialize
     ser.write(b'\x03')
     time.sleep(0.5)
-    
     ser.write(b'\x04')
-    time.sleep(5)
+    time.sleep(3)
     
     while ser.in_waiting > 0:
         ser.read(ser.in_waiting)
         time.sleep(0.1)
     
-    print("Waiting for CircuitPython to be ready...")
-    ready = False
-    start_time = time.time()
-    while not ready and (time.time() - start_time) < 10:
-        if ser.in_waiting > 0:
-            line = ser.readline().decode('utf-8', errors='ignore').strip()
-            print(f"Received: {line}")
-            if "ready for commands" in line:
-                ready = True
-        time.sleep(0.1)
-    
-    if not ready:
-        print("Warning: Didn't receive ready message")
-    
-    def send_command(cmd, timeout=10):
-        print(f"Sending: {cmd}")
+    def send_command(cmd, timeout=15):
+        print(f"\nSending: {cmd}")
         ser.write((cmd + "\r\n").encode("utf-8"))
-        time.sleep(0.1)
+        time.sleep(0.2)
         
-        response = ""
         attempts = 0
-        max_attempts = timeout * 10  # 10 attempts per second
+        max_attempts = timeout * 10
         while attempts < max_attempts:  
             if ser.in_waiting > 0:
                 data = ser.readline().decode('utf-8', errors='ignore').strip()
                 if data and not data.startswith('>>>') and not data.startswith('...') and data != cmd:
+                    print(f"Response: {data}")
                     return data
             time.sleep(0.1)
             attempts += 1
+        print("Response: No response")
         return "No response"
 
-    print("\nTesting commands:")
-    time.sleep(2) 
-    print("Response:", send_command("library_test"))
-    time.sleep(0.5)
-    print("Response:", send_command("hardware_test"))
+    print("\n" + "="*50)
+    print("    A4988 STEPPER MOTOR DEBUG TEST")
+    print("="*50)
+    
+    # 1. Check hardware status
+    print("\n1. HARDWARE STATUS CHECK:")
+    send_command("hardware_test")
+    
+    # 2. Check pin status
+    print("\n2. PIN STATUS CHECK:")
+    send_command("pin_test")
+    
+    # 3. Debug test - check pin signals
+    print("\n3. PIN SIGNAL DEBUG TEST:")
+    print("   This will test DIR and STEP pins with slow signals")
+    print("   Check with multimeter or LED:")
+    print("   - GP11 (STEP) should pulse HIGH/LOW")
+    print("   - GP12 (DIR) should go HIGH then LOW")
+    print("   Starting debug test...")
+    
+    send_command("stepper_debug", timeout=20)
+    
+    # 4. Basic movement tests
+    print("\n4. BASIC MOVEMENT TESTS:")
+    
+    print("   4a. Small forward movement (5 steps):")
+    send_command("stepper:5")
     time.sleep(2)
-
-    print("Response:", send_command("servoTest"))
-    time.sleep(6)
+    
+    print("   4b. Small backward movement (5 steps):")
+    send_command("stepper:-5")
+    time.sleep(2)
+    
+    print("   4c. Medium forward movement (25 steps):")
+    send_command("stepper:25")
+    time.sleep(3)
+    
+    print("   4d. Medium backward movement (25 steps):")
+    send_command("stepper:-25")
+    time.sleep(3)
+    
+    # 5. Full test sequence
+    print("\n5. FULL TEST SEQUENCE:")
+    print("   Running 50 steps forward, pause, 50 steps backward")
+    send_command("stepperTest", timeout=20)
+    
+    # 6. Large movement test
+    print("\n6. LARGE MOVEMENT TEST:")
+    
+    print("   6a. Large forward movement (100 steps):")
+    send_command("stepper:100")
+    time.sleep(5)
+    
+    print("   6b. Large backward movement (100 steps):")
+    send_command("stepper:-100")
+    time.sleep(5)
+    
+    # 7. Final status check
+    print("\n7. FINAL STATUS CHECK:")
+    send_command("hardware_test")
+    
+    print("\n" + "="*50)
+    print("    STEPPER DEBUG TEST COMPLETED")
+    print("="*50)
+    print("\nIf the motor didn't move, check:")
+    print("1. A4988 wiring:")
+    print("   - STEP → GP11")
+    print("   - DIR → GP12") 
+    print("   - VDD → 3.3V")
+    print("   - GND → GND")
+    print("   - VMOT → 12V motor power")
+    print("   - ENABLE → GND (or floating)")
+    print("2. Stepper motor connections to A4988 (1A,1B,2A,2B)")
+    print("3. Power supply (12V for motor)")
+    print("4. A4988 current adjustment (potentiometer)")
+    
     ser.close()
     
 except serial.SerialException as e:

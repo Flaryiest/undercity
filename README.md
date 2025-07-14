@@ -10,3 +10,16 @@ We made a few unique design choices while CADing and programming the launcher.
 Unfortunately, the turret platform did not print in time, and our robot cannot turn around, so we decided to scale down the project and focus on the launcher mechanism.
 
 If there is motion directly in front of the launcher, the launcher fires, sort of like a sentry watching a set sightline.
+
+BOM  
+- 14 3D Printed Parts (Lots of filament)
+- 1 Webcam - https://www.amazon.com/FWV-Streaming-Microphone-Desktop-Studying/dp/B0D72VQR6Q?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&psc=1&smid=A36LVV2HAP7FK3&gQT=1
+- 1 550 Motor - https://www.revrobotics.com/rev-21-1651/?gQT=2
+- 1 7.4V 2S Battery - https://www.amazon.com/Zeee-Batteries-Dean-Style-Connector-Vehicles/dp/B076Z778MJ?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&psc=1&smid=A646DVGSXYMNH&gPromoCode=cpn_us_en_pct_20_2025Q2&gQT=1
+- 1 Stepper Motor - https://www.amazon.com/STEPPERONLINE-Stepper-Bipolar-Connector-compatible/dp/B00PNEQKC0?dib=eyJ2IjoiMSJ9.hN-9QQUUabt-Xybqh_2heZErnxbgksLDP0FLL9IfB20DcgL3MP0jscRJUTv3cKjK_EhHKm97OEFgr9w4Yimkca5c6nsy7kl77bFJ0cz3XpUv5DdZEGwHgObEWgdkugO36gM4hi_hqj6v7HwdwNKyh4brTdtUYrr-8qQTI39tWqkEC7tWdxDZwm5f06zhnHQ7hRKYNt85A6cCEqcz8Yd14esjjfUFoUWLnj-D9eyl4So.v7ZlBBTxBiePDv4_OvINUIP3Of8ztWi0Z0JxgSpzMVA&dib_tag=se&keywords=Stepper+Motor&qid=1752500433&sr=8-3
+- 1 Stepper Motor Driver - https://www.pololu.com/product/1182
+- 1 Small Servo - https://www.amazon.com/Micro-Servos-Helicopter-Airplane-Controls/dp/B07MLR1498?dib=eyJ2IjoiMSJ9.POZxW8ictf28-1c0EFTfUjj_MoyYfzzsuC5MMwjT6raJJmiC2l4tbAhq2I6OQuTtXZ5jeyqRZtU24PFEkESl_AZgy1pOiXi1LMLC3YVKq-8920EopDx5Xh_Grr-Q7Qip7xw6Qb-n9roBfzVwd-hcmwfrjXN9axHXlOrt3ED6ptTK9uN4Lq1oTjIygM7WV5OZLeCt_ngN8xdoUho2dhz_E0ovX9usQ-dEE8GjMABkFX7h0a7QkCNbW133R_x06JglnTpVSHmRTDt6HjORXDFuyeAHP6hErDHiZP4kcANhM3Q.rrCXlX-dEgNtKnkm_FFS6nNXc9-RH3TAgRwpZ6ptrMc&dib_tag=se&keywords=servos&qid=1752500480&sr=8-6
+- 1 Orpheus Pico - https://www.microcenter.com/product/661033/raspberry-pi-pico-microcontroller-development-board?rd=1
+- 1 Bread Boards - https://www.amazon.com/BB400-Solderless-Plug-BreadBoard-tie-points/dp/B0040Z1ERO?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&psc=1&smid=A2RKGEIGG4B1JT&gQT=1
+
+
