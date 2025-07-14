@@ -22,6 +22,7 @@ If there is motion directly in front of the launcher, the launcher fires, sort o
 ## Firmware  
 The code is done on a combination of a orpheus pico and a computer. The computer does the motion detection and depth tracking in motionDetection.py, using opencv and MiDaS. From there, it sends commands to the pico which then runs the motor and servo.  
 The orpheus pico and electronics use circuit python, and relies on the adafruit motor library.  
+motion detection:  https://www.youtube.com/shorts/whcpX-JFEPc
 
 
 ## Bill of Materials (BOM)
