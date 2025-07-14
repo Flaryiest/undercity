@@ -5,33 +5,32 @@ import board
 import digitalio
 import pwmio
 import time
-from adafruit_motor import servo, stepper
+from adafruit_motor import servo
 
 # Initialize hardware
 my_servo = None
-motor1 = None
 brush_motor_available = False
 esc_motor = None
 
 try:
-    # Servo with proper 5V power from 5V pin
-    pwm = pwmio.PWMOut(board.A0, duty_cycle=2 ** 15, frequency=50)
+    # Servo setup for Orpheus Pico - using GP0 (equivalent to A0)
+    pwm = pwmio.PWMOut(board.GP0, duty_cycle=2 ** 15, frequency=50)
     my_servo = servo.Servo(pwm)
-    print("Servo initialized on A0 with 5V power")
+    print("Servo initialized on GP0 with 5V power")
 except Exception as e:
     print(f"Servo init error: {e}")
     my_servo = None
 
 try:
-    # ESC setup - start with explicit zero throttle
-    esc_pwm = pwmio.PWMOut(board.D7, duty_cycle=0, frequency=50)
+    # ESC setup for Orpheus Pico - using GP7 (equivalent to D7)
+    esc_pwm = pwmio.PWMOut(board.GP7, duty_cycle=0, frequency=50)
     esc_motor = servo.ContinuousServo(esc_pwm)
     
     # Explicitly set to zero throttle
     esc_motor.throttle = 0.0
     time.sleep(0.5)  # Give ESC time to recognize zero signal
     
-    print("ESC motor initialized on D7")
+    print("ESC motor initialized on GP7")
     brush_motor_available = True
 except Exception as e:
     print(f"ESC init error: {e}")
@@ -83,6 +82,21 @@ def process_command(command):
         else:
             return "Servo not available"
 
+    elif command == "servoTest":
+        if my_servo:
+            try:
+                # Test different angles with longer delays
+                angles = [0, 45, 90, 135, 180, 90, 0]
+                for angle in angles:
+                    print(f"Testing servo at {angle} degrees")
+                    my_servo.angle = angle
+                    time.sleep(1.5)  # Longer delay
+                return "Servo test completed"
+            except Exception as e:
+                return f"Servo test error: {e}"
+        else:
+            return "Servo not available"
+
     elif command.startswith("brushMotor:"):
         if brush_motor_available:
             try:
@@ -107,11 +121,13 @@ def process_command(command):
             try:
                 print("Starting servo-then-motor sequence")
                 
+                # Move servo to 90 degrees first
                 my_servo.angle = 90
                 time.sleep(0.5)
                 print("Servo moved to 90 degrees")
                 
-                esc_motor.throttle = 0.1
+                # Run motor at 100% for 0.5 seconds
+                esc_motor.throttle = 0.2
                 time.sleep(0.5)
                 esc_motor.throttle = 0.0
                 print("Motor sequence completed")
@@ -127,6 +143,26 @@ def process_command(command):
                 return f"Servo-then-motor error: {e}"
         else:
             return "Servo or motor not available"
+
+    elif command == "servoDisable":
+        if my_servo:
+            try:
+                pwm.duty_cycle = 0
+                return "Servo disabled - can move freely"
+            except Exception as e:
+                return f"Servo disable error: {e}"
+        else:
+            return "Servo not available"
+
+    elif command == "servoEnable":
+        if pwm:
+            try:
+                pwm.duty_cycle = 2 ** 15
+                return "Servo enabled"
+            except Exception as e:
+                return f"Servo enable error: {e}"
+        else:
+            return "Servo PWM not available"
 
     else:
         return "Unknown command"

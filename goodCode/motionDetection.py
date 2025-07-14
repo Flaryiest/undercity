@@ -172,13 +172,12 @@ frame_counter = 0
 last_depth_map = None
 last_depth_normalized = None
 
-# Add state tracking for complete isolation
 last_motion_trigger = 0
-motion_cooldown = 4
+motion_cooldown = 2.0  # 2 seconds between triggers instead of 1.0
 previous_detection_state = False
-state_change_buffer_time = 2.0  # Increase buffer time to 2 seconds
+state_change_buffer_time = 2.0  
 state_change_time = 0
-contour_groups = []  # Initialize this variable
+contour_groups = []
 
 while True:
     ret, frame = cap.read()
@@ -345,11 +344,12 @@ while True:
                 total_area += group_area
                 motion_detected = True
             
-            # Motor trigger with higher threshold
+            # Motor trigger with short cooldown to prevent spam
             if motion_detected and total_area > 10000 and (elapsed_time - last_motion_trigger) > motion_cooldown:
+                print(f"Motion area: {total_area} - triggering motor/servo")
                 time.sleep(0.3)
                 trigger_motor_and_servo()
-                last_motion_trigger = elapsed_time
+                last_motion_trigger = elapsed_time  # Update the trigger time
             
             # Draw detection results
             if motion_detected and all_motion_points:
