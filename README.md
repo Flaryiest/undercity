@@ -25,6 +25,12 @@ The code is done on a combination of a orpheus pico and a computer. The computer
 The orpheus pico and electronics use circuit python, and relies on the adafruit motor library.  
 motion detection:  https://www.youtube.com/shorts/whcpX-JFEPc
 
+To run the code:  
+- Download circuit python on your raspberry/orpheus pico  
+- Add the adafruit motor library to the library folder of your MCU  
+- Clone this repository  
+- Run goodCode/motionDetection.py  
+
 
 ## Bill of Materials (BOM)
 
