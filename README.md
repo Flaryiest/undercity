@@ -4,16 +4,20 @@ Do you like Squid Game!!!
 This project is a flywheel disc shooter mounted on a turret platform with motion detection, simulating the "Red Light, Green Light" game in Squid Game.
 
 We made a few unique design choices while CADing and programming the launcher.
-- To sustain a semi-automatic speed, we used a gravity-fed hopper design, in which the discs slowly fall into the barrel.
+- Our launching mechanism involved a single motor-powered flywheel (contrary to the usual 2 due to materials constraints) which would accelerate a plastic disc as it passed in front of the wheel:
+<img width="776" height="663" alt="image" src="https://github.com/user-attachments/assets/4054fea3-6442-42a9-9061-a1f75d1f80ef" />
+ <img width="340" height="591" alt="image" src="https://github.com/user-attachments/assets/2941423c-60f8-485c-9e06-5cac481580d5" />
+
+  
+- To sustain a more continuous rate of fire, we used a gravity-fed hopper design, in which the discs slowly fall into the barrel and are pushed into the flywheel:
   <img width="981" height="780" alt="image" src="https://github.com/user-attachments/assets/aa34ea3c-ff2f-4cc5-8582-b6ad0510579e" />
 
-- To create linear motion for pushing the discs into the flywheel, we used a rack and pinion setup where the back wall had a rack under it and was geared to a servo below:
+- To generate linear motion for the disc pusher, we used a rack and pinion setup, with the rack built into the pushing block and the pinion being powered by a mini servo:
 
   <img width="662" height="626" alt="image" src="https://github.com/user-attachments/assets/a31e4380-c4ca-4f95-97a2-0022b4499a14" />
 
 - To combat the load of the battery and motor on the turret platform, we geared the stepper motor in a 1:2 ratio:
   <img width="376" height="499" alt="image" src="https://github.com/user-attachments/assets/bbcd4e63-0474-450b-8b08-2f005c5d5bd7" />
-
 
 
 Unfortunately, the turret platform did not print in time, and our robot cannot turn around, so we decided to scale down the project and focus on the launcher mechanism.
