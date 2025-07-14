@@ -8,6 +8,7 @@ We made a few unique design choices while CADing and programming the launcher.
   <img width="981" height="780" alt="image" src="https://github.com/user-attachments/assets/aa34ea3c-ff2f-4cc5-8582-b6ad0510579e" />
 
 - To create linear motion for pushing the discs into the flywheel, we used a rack and pinion setup where the back wall had a rack under it and was geared to a servo below:
+
   <img width="662" height="626" alt="image" src="https://github.com/user-attachments/assets/a31e4380-c4ca-4f95-97a2-0022b4499a14" />
 
 - To combat the load of the battery and motor on the turret platform, we geared the stepper motor in a 1:2 ratio:
