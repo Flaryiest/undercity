@@ -65,41 +65,9 @@ try:
     print("   - GP12 (DIR) should go HIGH then LOW")
     print("   Starting debug test...")
     
-    send_command("stepper_debug", timeout=20)
-    
-    # 4. Basic movement tests
-    print("\n4. BASIC MOVEMENT TESTS:")
-    
-    print("   4a. Small forward movement (5 steps):")
-    send_command("stepper:5")
-    time.sleep(2)
-    
-    print("   4b. Small backward movement (5 steps):")
-    send_command("stepper:-5")
-    time.sleep(2)
-    
-    print("   4c. Medium forward movement (25 steps):")
-    send_command("stepper:25")
-    time.sleep(3)
-    
-    print("   4d. Medium backward movement (25 steps):")
-    send_command("stepper:-25")
-    time.sleep(3)
-    
-    # 5. Full test sequence
-    print("\n5. FULL TEST SEQUENCE:")
-    print("   Running 50 steps forward, pause, 50 steps backward")
-    send_command("stepperTest", timeout=20)
-    
-    # 6. Large movement test
-    print("\n6. LARGE MOVEMENT TEST:")
-    
-    print("   6a. Large forward movement (100 steps):")
-    send_command("stepper:100")
-    time.sleep(5)
-    
+ 
     print("   6b. Large backward movement (100 steps):")
-    send_command("stepper:-100")
+    send_command("brushMotor:30")
     time.sleep(5)
     
     # 7. Final status check
