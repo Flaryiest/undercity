@@ -9,10 +9,10 @@ We made a few unique design choices while CADing and programming the launcher.
  <img width="340" height="591" alt="image" src="https://github.com/user-attachments/assets/2941423c-60f8-485c-9e06-5cac481580d5" />
 
   
-- To sustain a semi-automatic speed, we used a gravity-fed hopper design, in which the discs slowly fall into the barrel.
+- To sustain a more continuous rate of fire, we used a gravity-fed hopper design, in which the discs slowly fall into the barrel and are pushed into the flywheel:
   <img width="981" height="780" alt="image" src="https://github.com/user-attachments/assets/aa34ea3c-ff2f-4cc5-8582-b6ad0510579e" />
 
-- To create linear motion for pushing the discs into the flywheel, we used a rack and pinion setup where the back wall had a rack under it and was geared to a servo below:
+- To generate linear motion for the disc pusher, we used a rack and pinion setup, with the rack built into the pushing block and the pinion being powered by a mini servo:
 
   <img width="662" height="626" alt="image" src="https://github.com/user-attachments/assets/a31e4380-c4ca-4f95-97a2-0022b4499a14" />
 
