@@ -5,8 +5,15 @@ This project is a flywheel disc shooter mounted on a turret platform with motion
 
 We made a few unique design choices while CADing and programming the launcher.
 - To sustain a semi-automatic speed, we used a gravity-fed hopper design, in which the discs slowly fall into the barrel.
-- To create linear motion for pushing the discs into the flywheel, we used a rack and pinion setup where the back wall had a rack under it and was geared to a servo below.
-- To combat the load of the battery and motor on the turret platform, we geared the stepper motor 1:2.
+  <img width="981" height="780" alt="image" src="https://github.com/user-attachments/assets/aa34ea3c-ff2f-4cc5-8582-b6ad0510579e" />
+
+- To create linear motion for pushing the discs into the flywheel, we used a rack and pinion setup where the back wall had a rack under it and was geared to a servo below:
+  <img width="662" height="626" alt="image" src="https://github.com/user-attachments/assets/a31e4380-c4ca-4f95-97a2-0022b4499a14" />
+
+- To combat the load of the battery and motor on the turret platform, we geared the stepper motor in a 1:2 ratio:
+  <img width="376" height="499" alt="image" src="https://github.com/user-attachments/assets/bbcd4e63-0474-450b-8b08-2f005c5d5bd7" />
+
+
 
 Unfortunately, the turret platform did not print in time, and our robot cannot turn around, so we decided to scale down the project and focus on the launcher mechanism.
 
