@@ -2,7 +2,9 @@ Do you like Squid Game!!!
 
 <img width="2547" height="3296" alt="Sample Assembly" src="https://github.com/user-attachments/assets/c4352ae9-fcac-4a8e-960c-9ef75fe71828" />
 This project is a flywheel disc shooter mounted on a turret platform with motion detection, simulating the "Red Light, Green Light" game in Squid Game.  
-
+https://www.youtube.com/shorts/GGOR0AeZYXc
+  
+  
 <img width="262" height="273" alt="firefox_qANK9je56S" src="https://github.com/user-attachments/assets/66412639-3e9b-479b-9587-6e11901b74d9" />
 <img width="728" height="686" alt="Discord_66T32WqUX3" src="https://github.com/user-attachments/assets/c3e75a9f-8df3-41ac-ad10-42e5941e672d" />
 
